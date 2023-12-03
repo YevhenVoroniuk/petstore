@@ -31,9 +31,6 @@ public class ReserveHandler {
 
     var content = request.getBody();
     var sessionId = request.getQueryParameters().get("sessionId");
-    if (sessionId == null || sessionId.isEmpty()) {
-      sessionId = "none";
-    }
 
     context.getLogger().info("Writing to file: " + sessionId + ".json");
     context.getLogger().info("Content: " + content);
