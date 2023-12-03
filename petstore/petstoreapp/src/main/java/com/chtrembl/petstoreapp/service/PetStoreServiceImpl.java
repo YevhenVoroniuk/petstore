@@ -207,6 +207,7 @@ public class PetStoreServiceImpl implements PetStoreService {
 
 			Consumer<HttpHeaders> consumer = it -> it.addAll(this.webRequest.getHeaders());
 
+			logger.info("Update order. JSON: {}", orderJSON);
 			updatedOrder = this.orderServiceWebClient.post().uri("petstoreorderservice/v2/store/order")
 					.body(BodyInserters.fromPublisher(Mono.just(orderJSON), String.class))
 					.accept(MediaType.APPLICATION_JSON)
