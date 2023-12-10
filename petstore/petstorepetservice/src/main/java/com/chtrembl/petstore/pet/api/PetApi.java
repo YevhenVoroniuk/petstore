@@ -45,16 +45,6 @@ public interface PetApi {
 		return Optional.empty();
 	}
 
-	// wired in for the scenario the interface declarations need access to scoped
-	// beans, all implementation should occur in Controller tho
-	public DataPreload getBeanToBeAutowired();
-
-	// wired in for the scenario the interface declarations need access to scoped
-	// beans, all implementation should occur in Controller tho
-	default List<Pet> getPreloadedPets() {
-		return getBeanToBeAutowired().getPets();
-	}
-
 	@ApiOperation(value = "Add a new pet to the store", nickname = "addPet", notes = "", authorizations = {
 			@Authorization(value = "petstore_auth", scopes = {
 					@AuthorizationScope(scope = "write:pets", description = "modify pets in your account"),

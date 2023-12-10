@@ -13,6 +13,10 @@ petstore:
     reservation:
       url: ${PETSTORERESERVATIONSERVICE_URL:http://localhost:8083}
 
+cosmos-db:
+  uri: ${COSMOSDB_URI}
+  key: ${COSMOSDB_KEY}
+  database: ${COSMOSDB_DATABASE}
 
 spring:
   application:

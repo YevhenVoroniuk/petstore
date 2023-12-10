@@ -54,12 +54,6 @@ public class StoreApiCache {
 	}
 
 	@Cacheable("orders")
-	public Order getOrder(String id) {
-		log.info(String.format("PetStoreOrderService creating new order id:%s and caching it", id));
-		return new Order();
-	}
-
-	@Cacheable("orders")
 	public List<Product> getProducts() {
 		log.info(String.format(
 				"PetStoreOrderService retrieving products from %s/petstoreproductservice/v2/product/findByStatus?status=available",

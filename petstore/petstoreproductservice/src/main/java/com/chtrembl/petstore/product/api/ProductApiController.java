@@ -1,5 +1,6 @@
 package com.chtrembl.petstore.product.api;
 
+import com.chtrembl.petstore.product.service.ProductService;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -50,12 +51,8 @@ public class ProductApiController implements ProductApi {
 	private ContainerEnvironment containerEnvironment;
 
 	@Autowired
-	private DataPreload dataPreload;
+	private ProductService productService;
 
-	@Override
-	public DataPreload getBeanToBeAutowired() {
-		return dataPreload;
-	}
 
 	@org.springframework.beans.factory.annotation.Autowired
 	public ProductApiController(ObjectMapper objectMapper, NativeWebRequest request) {
@@ -101,8 +98,9 @@ public class ProductApiController implements ProductApi {
 					"PetStoreProductService incoming GET request to petstoreproductservice/v2/pet/findProductsByStatus?status=%s",
 					status));
 			try {
-				String petsJSON = new ObjectMapper().writeValueAsString(this.getPreloadedProducts());
-				ApiUtil.setResponse(request, "application/json", petsJSON);
+				String productsJSON = new ObjectMapper().writeValueAsString(productService.getProducts());
+				log.info("PetStoreProductService returning JSON response: " + productsJSON);
+				ApiUtil.setResponse(request, "application/json", productsJSON);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (JsonProcessingException e) {
 				ProductApiController.log.error("PetStoreProductService with findProductsByStatus() " + e.getMessage());

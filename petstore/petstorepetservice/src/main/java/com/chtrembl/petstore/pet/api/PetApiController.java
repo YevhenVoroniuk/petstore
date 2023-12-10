@@ -1,5 +1,6 @@
 package com.chtrembl.petstore.pet.api;
 
+import com.chtrembl.petstore.pet.service.PetService;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -49,12 +50,7 @@ public class PetApiController implements PetApi {
 	private ContainerEnvironment containerEnvironment;
 
 	@Autowired
-	private DataPreload dataPreload;
-
-	@Override
-	public DataPreload getBeanToBeAutowired() {
-		return dataPreload;
-	}
+	private PetService petService;
 
 	@org.springframework.beans.factory.annotation.Autowired
 	public PetApiController(ObjectMapper objectMapper, NativeWebRequest request) {
@@ -100,7 +96,7 @@ public class PetApiController implements PetApi {
 					"PetStorePetService incoming GET request to petstorepetservice/v2/pet/findPetsByStatus?status=%s",
 					status));
 			try {
-				String petsJSON = new ObjectMapper().writeValueAsString(this.getPreloadedPets());
+				String petsJSON = new ObjectMapper().writeValueAsString(petService.getPets());
 				ApiUtil.setResponse(request, "application/json", petsJSON);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (JsonProcessingException e) {

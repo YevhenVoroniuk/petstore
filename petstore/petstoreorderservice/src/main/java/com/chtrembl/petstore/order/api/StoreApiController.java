@@ -3,6 +3,7 @@ package com.chtrembl.petstore.order.api;
 import com.chtrembl.petstore.order.model.ContainerEnvironment;
 import com.chtrembl.petstore.order.model.Order;
 import com.chtrembl.petstore.order.model.Product;
+import com.chtrembl.petstore.order.service.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -49,6 +50,9 @@ public class StoreApiController implements StoreApi {
 
 	@Autowired
 	private StoreApiCache storeApiCache;
+
+	@Autowired
+	private OrderService orderService;
 
 	@Autowired
 	private ReservationServiceClient reservationServiceClient;
@@ -117,7 +121,7 @@ public class StoreApiController implements StoreApi {
 					"PetStoreOrderService incoming POST request to petstoreorderservice/v2/order/placeOder for order id:%s",
 					body.getId()));
 
-			var order = this.storeApiCache.getOrder(body.getId());
+			var order = this.orderService.getOrder(body.getId());
 			order.setId(body.getId());
 			order.setEmail(body.getEmail());
 			order.setComplete(body.isComplete());
@@ -165,11 +169,13 @@ public class StoreApiController implements StoreApi {
 				order.setProducts(body.getProducts());
 			}
 
+			orderService.saveOrder(order);
+
 			try {
 				String orderJSON = new ObjectMapper().writeValueAsString(order);
 
-				var sessionId = order.getId(); // session id is passed in order id
-				reservationServiceClient.reserve(orderJSON, sessionId);
+				///var sessionId = order.getId(); // session id is passed in order id
+				//reservationServiceClient.reserve(orderJSON, sessionId);
 
 				ApiUtil.setResponse(request, "application/json", orderJSON);
 				return new ResponseEntity<>(HttpStatus.OK);
@@ -199,7 +205,7 @@ public class StoreApiController implements StoreApi {
 
 			List<Product> products = this.storeApiCache.getProducts();
 
-			Order order = this.storeApiCache.getOrder(orderId);
+			Order order = this.orderService.getOrder(orderId);
 
 			if (products != null) {
 				// cross reference order data (order only has product id and qty) with product

@@ -45,16 +45,6 @@ public interface ProductApi {
 		return Optional.empty();
 	}
 
-	// wired in for the scenario the interface declarations need access to scoped
-	// beans, all implementation should occur in Controller tho
-	public DataPreload getBeanToBeAutowired();
-
-	// wired in for the scenario the interface declarations need access to scoped
-	// beans, all implementation should occur in Controller tho
-	default List<Product> getPreloadedProducts() {
-		return getBeanToBeAutowired().getProducts();
-	}
-
 	@ApiOperation(value = "Add a new product to the store", nickname = "addProduct", notes = "", authorizations = {
 			@Authorization(value = "petstore_auth", scopes = {
 					@AuthorizationScope(scope = "write:products", description = "modify products in your account"),
