@@ -9,12 +9,20 @@ server:
 spring:
   application:
     name: petstoreproductservice
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-sources:
+            - endpoint: ${AZURE_KEYVAULT_URI}
+              credential:
+                managed-identity-enabled: true
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-    url: {SPRING_DATASOURCE_URL}
-    password: {SPRING_DATASOURCE_PASSWORD}
+    url: ${springDatasourceUrl}
+    password: ${springDatasourcePassword}
   jpa:
     hibernate:
       ddl-auto: update
