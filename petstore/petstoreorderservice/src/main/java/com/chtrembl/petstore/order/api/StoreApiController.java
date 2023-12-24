@@ -174,8 +174,8 @@ public class StoreApiController implements StoreApi {
 			try {
 				String orderJSON = new ObjectMapper().writeValueAsString(order);
 
-				///var sessionId = order.getId(); // session id is passed in order id
-				//reservationServiceClient.reserve(orderJSON, sessionId);
+				var sessionId = order.getId(); // session id is passed in order id
+				reservationServiceClient.reserve(orderJSON, sessionId);
 
 				ApiUtil.setResponse(request, "application/json", orderJSON);
 				return new ResponseEntity<>(HttpStatus.OK);
