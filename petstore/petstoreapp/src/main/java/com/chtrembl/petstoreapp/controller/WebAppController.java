@@ -91,7 +91,7 @@ public class WebAppController {
 			}
 
 			// this should really be done in the authentication/pre auth flow....
-			this.sessionUser.setName((String) user.getAttributes().get("name"));
+			this.sessionUser.setName((String) user.getAttributes().get("given_name"));
 
 			if (!this.sessionUser.isInitialTelemetryRecorded()) {
 				this.sessionUser.getTelemetryClient().trackEvent(
